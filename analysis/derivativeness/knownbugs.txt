@@ -1,0 +1,24 @@
+List of known issues with the script that calculate derivativeness:
+
+1. For projects with sprites in non-latin characters the comparison only does blocks because Rita's analyzer ignored non-latin sprites.
+
+Examples:
+
+Project 1109615. You can see there are two sprites according to these
+
+SELECT *
+FROM `project_sprite_blocks_stack`
+WHERE project_id =1109615
+
+It also has two sprites according to:
+SELECT *
+FROM `project_media`
+WHERE project_id =1109615
+LIMIT 0 , 30
+
+But it has no sprites according to project_sprites
+SELECT *
+FROM `project_sprites`
+WHERE project_id =1109615
+
+2. For projects before Oct 2009, the assumption is that the remix is based on the latest version of the original. The reason being is that we have no date of when each version of the original's was created. For projects after Oct 2009 (roughly) we do have the date for each and every single version in analyzer_log.

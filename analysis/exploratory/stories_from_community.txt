@@ -1,0 +1,91 @@
+HEA: From crowdsourcing to group remixing
+----------------------------------------
+my2ndaccount decides to open a call for the community to remix his project as a way to submit characters for a future RPG.
+http://scratch.mit.edu/projects/my2ndaccount/1866636
+Then he makes it into a competition:
+http://scratch.mit.edu/projects/my2ndaccount/1868760
+One of the entries made it into the final version
+http://scratch.mit.edu/projects/my2ndaccount/1870604
+http://scratch.mit.edu/projects/Mr-Negitive-Test/1869364
+Unrelated:
+He also made this cute animation giving gifts to his best friends on Scratch
+http://scratch.mit.edu/projects/my2ndaccount/1905461
+
+De novo creator is pleased
+--------------------------
+This message by (i think) eRKSToCK was posted on the gdoc:
+"Komodo66 (I think that's the name) and some others are doing a collaboration remix of my sensor (platformer base) and it's really coming along well :) I like it because they did something useful with a simple engine and made their own game"
+The projects involved are:
+http://scratch.mit.edu/projects/komodo66/1885200 <-- here eRKSToCK asks what he's doing
+http://scratch.mit.edu/projects/eRKSToCK/1857168
+
+Sequence of popular and slightly different "add yourself" projects
+------------------------------------------------------------------
+Starts with swifty's who didn't seem to have intended it to be a crowdremix. 
+Fundude then creates an explicit crowdremix out of it, it is not as popular.
+Marioblender creates andother crowdremix and it seems to take off. YoshiXXXXX's branch turns out very generative.
+http://scratch.mit.edu/projects/Marioblender/1475912/mods
+
+Parodies of popular Scratch series.
+-------------------------------
+"The Beach" is a popular Scratch series by swifty2. 
+DucksINC created spoofs of the series. The spoofs have been well-received by the community.
+http://scratch.mit.edu/projects/DucksINC/1260649
+TODO: check what the exact differences between the remix and original are. Seems like most of the changes are to the images and one additional sprite.
+
+"The candy bar" has a lot of spoofs. Someone mentioned this one:
+"i like the candy bar 5 because it's soooooooooooooooooooooo funny how astro and the other guy go on this whole fight on one candy bar XD"
+http://scratch.mit.edu/projects/horido6/1851495
+but there are many more:
+http://scratch.mit.edu/projects/Astro947/1814980/mods
+
+Voice changes: remixer changes the original voice for his
+---------------------------------------------------------
+The original creator posted on the survey: "I Like He Added His Own Voice To The Project."
+http://scratch.mit.edu/projects/horido6/1898777 
+
+People in support for add yourself remixes
+------------------------------------------
+"i love the remix where you add yourself running from stuff"
+"Mine is the Wolf Coloring Contest. This is my favorite because looking at all the projects it shows how much work was put into it. And all the people running it are really fair."http://scratch.mit.edu/galleries/view/115398
+"My favorite remix was, add yourself to the group ( of scratchers) it was a tribute to scratch. and The music was SOOOO CATCHY! XD "
+Nyan Cat: "So My Favorite Remix Was My First Topped Remixed Project http://scratch.mit.edu/projects/Pendry124/1812089 <--- Link. And So, It Was The Most Remixes I Ever Had In My Front Page Corer Or Whatever Because I Had a Couple Of Other Projects That Got First Or Second Topped Remixed But This One Is Special Because It Was My First One And Had The Most Remixes Out Of All Of The My Projects That Got Topped Remixed. So Thats Why Add Yourself As A Nyan Cat Was My Favorite Remix Project! :3"
+"remix yourself having fun on summer vacation by cynder10 because it was fun and it summer people are in that kind of a mood.  remix yourself as a Nyan Cat because the Nyan cat is very popular it fun to remix :D"
+
+
+Anti addyourself
+----------------
+"I don't exactly know if this is what you want but I always like remixes that expand and improve the base project.  Some examples may be adding new tools to a paint editor or adding more levels to a platformer. As for 'add yourself' projects... I don't really like them :)"
+
+Conflict
+--------
+My best remixing experience was when I remixed one user's project and added more to it and others thought he had copied me! Thereafter, I have not remixed anyone's projects as a precaution and now I make a lot of my original projects!
+
+Remixing sample project
+-----------------------
+its ScrollingDemo,because i like to create games http://scratch.mit.edu/projects/SampleProjectsTeam/583769
+
+Remix of "Night at the Roxbury" from SNL
+----------------------------------------
+[I like the remix] "WHAT IS ZELDA by 10volt because it was very appreciative, and it was a remix of one of my scratches."
+
+Remix tree: http://scratch.mit.edu/projects/yayal0l/1409980/mods
+Mario version with additional audio: http://scratch.mit.edu/projects/yashua/185467
+Zelda version: http://scratch.mit.edu/projects/10volt/1904137
+Girl version: http://scratch.mit.edu/projects/yayal0l/1409980
+Wireframe version: http://scratch.mit.edu/projects/angeliccharizard/1338941
+Different music: http://scratch.mit.edu/projects/RyeBread27/1349478
+
+
+Remixing helped program a game
+------------------------------
+When I first started scratch, I didn't know much about it or how it worked. So I gave up on it.  A few years later I bought my own computer and decided to give scratch another chance. Being a bit older I had more of an understanding of how it worked, but I still didn't really know how to use it very well. I knew from the start I was going to make games, specifically platforming games. For those of you who don't know what that is, it's a running and jumping type game.  I started off with a great game idea that I'd saved over the years, Twisted (I wont get into what the game is about, but I did post a later version of it). I worked on it for a while, and finally, I was finished, but not satisfied. The movement was choppy and in my opinion unacceptable. So I searched the site for platforming engines. I found a nice one by CHEZA69. At that point I had no clue what remixing was so I planned to just copy the scripts block for block in another project (with credit given of course). That's when I looked at the top left corner of the scratch program and noticed the share button was still there. I gave a quick look at the scripts and began making my game, the game I made is still posted on the scratch site (and was also mention previously in the story).  At the moment I have a project in the top loved category with nothing but scratch and remixing to thank. I have to say if it weren't for remixing, I would have never understood velocity or scrolling, it should be used for things other than add yourself and coloring contests (not that I'm against those in any way) it's a tool that makes the scratch community stand out as a friendlier and more learning based environment.  ~Olivora
+http://scratch.mit.edu/projects/olivora/1089239
+TODO: compare code and find the code that was reused
+
+Incremental/crowd remixing (art-based)
+--------------------------------------
+This uses remixing as a way to sign up for an RPG
+"I think it's interesting because you get create a well drawn character without really drawing it.  Plus it's Dave's Life, a humerous video series."
+http://scratch.mit.edu/projects/jonzo/1865089/mods
+http://scratch.mit.edu/projects/Pendry124/1812089/mods

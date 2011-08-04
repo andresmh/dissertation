@@ -1,0 +1,176 @@
+#
+# This analysis is performed on the analysisdbv2.analysis_remix_comparisons_test table generated with the script:
+# remix_comp.php
+# That table ignores projects for which we cannot get good info of the version number (I think most of them are from the batch analysis).
+
+DESCRIBING THE SAMPLE
+---------------------
+
+Summary: remixes from Oct 2009 to May 2011. 1 year 7 months-ish
+
+Total number of remix-original pairs: 257,792
+$ mysql -e "SELECT count(*) remix_pid FROM analysisdbv2.analysis_remix_comparisons_test"
+
+Latest remix_pid in the sample: 1,799,233 created on 2011-05-20 22:08:49
+$ mysql -e "SELECT remix_pid, created FROM analysisdbv2.analysis_remix_comparisons_test as a, beta.projects as b where a.remix_pid = b.id ORDER BY a.remix_pid DESC LIMIT 1"
+
+Oldest remix_pid in the sample: 717,476 | 2009-10-14 21:18:34
+$ mysql -e "SELECT remix_pid, created FROM analysisdbv2.analysis_remix_comparisons_test as a, beta.projects as b where a.remix_pid = b.id ORDER BY a.remix_pid ASC LIMIT 1"
+
+PROJECTS MISSING FROM THE SAMPLE
+--------------------------------
+Summary: projects before big batch analysis on Oct 2009.
+
+Roughly, they are projects before Oct 2009 and/or before project 717476. 
+
+The problematic ones are those for which we don't have the date on which each version was released.
+The sample uses the projects.created date for the first version of the remix and it finds the closest version of the original to that date.
+
+But we do have the date when the 1st version of every project was released (beta.projects.created).
+So we can either ignore projects with more than 1 version or treat them as if they only had 1 version and use the date in projects.created (which is the the creation date for the 1st version)
+
+How many of the project were not analyzed? Approx. 708,857.
+...of those that were not analyzed, how many have more than 1 version?  9.8% (69,833)
+$ mysql -e "SELECT count(*) as total, SUM(CASE WHEN b.version > 1 THEN 1 ELSE 0 END) as hasmorethan1version FROM beta.projects as b WHERE b.id < 717476"
+
+LOOKING FOR CLONES
+------------------
+Total number of remix-original pairs: 257792
+The goal of this analysis of the sample data is to find how many remixes are clones or identical copies.
+
+1. Perfect clones: Exactly the same in all dimensions: 2.8% (7404), 1.6% (4172) are self-remixes, excluding self-remixes 1.2% (3232)
+What it means: clones without changes in the states of its variables, in the same order and not affected by media compression.
+
+$ mysql -e "SELECT count(*) FROM analysisdbv2.analysis_remix_comparisons_test WHERE identical_stacks = 1 and sprites_added = 0 and sprites_added = 0 and sprites_removed=0 AND sprites_renamed=0 AND images_added=0 AND images_removed=0 AND images_renamed=0 AND images_edited=0 AND images_bytes_changed=0 AND sounds_added=0 AND sounds_removed=0 AND sounds_renamed=0 AND sounds_edited=0 AND sounds_bytes_changed=0 AND strings_added=0 AND strings_removed=0"
+Only self remixes:
+$ mysql -e "SELECT count(*) FROM analysisdbv2.analysis_remix_comparisons_test as a, analysisdbv2.selfremixes as s WHERE a.identical_stacks = 1 and a.sprites_added = 0 and a.sprites_added = 0 and a.sprites_removed=0 AND a.sprites_renamed=0 AND a.images_added=0 AND a.images_removed=0 AND a.images_renamed=0 AND a.images_edited=0 AND a.images_bytes_changed=0 AND a.sounds_added=0 AND a.sounds_removed=0 AND a.sounds_renamed=0 AND a.sounds_edited=0 AND a.sounds_bytes_changed=0 AND a.strings_added=0 AND a.strings_removed=0 AND a.remix_pid = s.remix_pid AND a.original_pid = s.original_pid"
+
+2. Clones with different stack but same block count (and everything else): 7.9% (20463), self-remixes 5.1% (13255), excluding self-remixes 2.8% (7208), self-remixes 5.1% (13255)
+What it means: clones with a different stack because because the scripts are in different, but order does not impact execution [1]
+
+$ mysql -e "SELECT count(*) FROM analysisdbv2.analysis_remix_comparisons_test WHERE identical_stacks = 0 and sprites_added = 0 and sprites_added = 0 and sprites_removed=0 AND sprites_renamed=0 AND images_added=0 AND images_removed=0 AND images_renamed=0 AND images_edited=0 AND images_bytes_changed=0 AND sounds_added=0 AND sounds_removed=0 AND sounds_renamed=0 AND sounds_edited=0 AND sounds_bytes_changed=0 AND strings_added=0 AND strings_removed=0"
+Only self-remixes:
+$ mysql -e "SELECT count(*) FROM analysisdbv2.analysis_remix_comparisons_test as a, analysisdbv2.selfremixes as s WHERE a.identical_stacks = 0 and a.sprites_added = 0 and a.sprites_added = 0 and a.sprites_removed=0 AND a.sprites_renamed=0 AND a.images_added=0 AND a.images_removed=0 AND a.images_renamed=0 AND a.images_edited=0 AND a.images_bytes_changed=0 AND a.sounds_added=0 AND a.sounds_removed=0 AND a.sounds_renamed=0 AND a.sounds_edited=0 AND a.sounds_bytes_changed=0 AND a.strings_added=0 AND a.strings_removed=0 AND a.remix_pid = s.remix_pid AND a.original_pid = s.original_pid"
+
+3. Clones with different same stack  because strings are changed: 3.9% (10,230), self-remixes 2.4% (6235), excluding self-remixes 1.5% (3995)
+What it means: clones with different stack because they are saved with at a different state hence the variables have different values
+Caveat: it also could include changes in comment','say','think','broadcast','variable_name',etc 
+TODO: compare each type of project_user_generated_strings separately 'comment','say','think','broadcast','variable_name','variable_value','list_name','list_value'
+This could be clones that are saved with a different state, hence variables are different. But it could also be changes to the speech balloons.
+$ mysql -e "SELECT count(*) FROM analysisdbv2.analysis_remix_comparisons_test WHERE identical_stacks = 0 and sprites_added = 0 and sprites_added = 0 and sprites_removed=0 AND sprites_renamed=0 AND images_added=0 AND images_removed=0 AND images_renamed=0 AND images_edited=0 AND images_bytes_changed=0 AND sounds_added=0 AND sounds_removed=0 AND sounds_renamed=0 AND sounds_edited=0 AND sounds_bytes_changed=0 AND (strings_added>0 OR strings_removed>0)"
+Only self-remixes
+$ mysql -e "SELECT count(*) FROM analysisdbv2.analysis_remix_comparisons_test as a, analysisdbv2.selfremixes as s WHERE a.identical_stacks = 0 and a.sprites_added = 0 and a.sprites_added = 0 and a.sprites_removed=0 AND a.sprites_renamed=0 AND a.images_added=0 AND a.images_removed=0 AND a.images_renamed=0 AND a.images_edited=0 AND a.images_bytes_changed=0 AND a.sounds_added=0 AND a.sounds_removed=0 AND a.sounds_renamed=0 AND a.sounds_edited=0 AND a.sounds_bytes_changed=0 AND (a.strings_added>0 OR a.strings_removed>0) AND a.remix_pid = s.remix_pid AND a.original_pid = s.original_pid"
+
+4. Clones with different media byte sizes due to compression.
+$ mysql -e "SELECT count(*) FROM analysisdbv2.analysis_remix_comparisons_test WHERE identical_stacks = 1 and sprites_added = 0 and sprites_added = 0 and sprites_removed=0 AND sprites_renamed=0 AND images_added=0 AND images_removed=0 AND images_renamed=0 AND images_edited=0 AND images_bytes_changed=0 AND sounds_added=0 AND sounds_removed=0 AND sounds_renamed=0 AND sounds_edited=0 AND sounds_bytes_changed=0 AND (strings_added>0 OR strings_removed>0)"
+
+KNOWN BUGS
+----------
+
+* Non-unique sprite names.
+  Script assumed sprite names are unique. This is not the case. For example: 790788, 203171.
+  Number of remixes-originals with duplicate sprite names: 75,838  
+  They all probably have the wrong calculation of sprites_added, sprites_removed, sprites_renamed
+  $ mysql -e "SELECT COUNT(*) as qty,name,project_id,project_version FROM project_sprites GROUP BY name,project_id,project_version HAVING qty > 1"
+
+* Broken sb analysis. 
+  I found some early examples where the block analysis is wrong. 
+  For example: 717441 and 717476. 
+  Fortunately, it seems like the bug has been fixed because I shared the two projects again and they were parsed correctly: 
+  "SELECT * FROM `project_blocks_count` WHERE project_id  IN (1909838,1909852)";
+  Solution: re-run analysis? Too much time. Find them to see how prevalent are? Are they only projects analyzed in October? If so, maybe we can ignore them?
+
+* Stacks are falsely identified as different.
+  Yes, they are different strings but they are not really different, they are simply organized in a different order or have different states [1].
+  Solution: short term: add a field identical_stacks_length. Compare the char_length of the remix vs original.
+            long term:  extract scripts into new table project_scripts [T2] Stacks differ just because statements are in different order :( Wordcount helps?
+
+* Different values in params. Arguably different code. We do  not have this in the params. Example: IN ( 1798711, 1791225 ) different coordinates in goto
+
+TODO
+-----
+
+[T1] Calculate difference in charlength of stacks
+[T2] Extract scripts from stack and put them into projects_scripts (project_id, version_id, sprite_id, script_id, human_readable, stack, human_sansparmas, stack_sansparams)
+human_sansparmas: removes all numbers and "quoted" strings
+stack_sansparams: remmoves all params in "quotes"
+[T3] Calculate percentage difference between scripts.
+
+
+FOOTNOTES
+-----
+[1] Example of identical stacks that are recognized as different
+
+when "space" key pressed
+    next background
+
+when green flag clicked
+    switch to background "speech"
+    forever
+        play sound "01 happy song" until done
+
+is the same as:
+
+when green flag clicked
+    switch to background "speech"
+    forever
+        play sound "01 happy song" until done
+
+when "space" key pressed
+    next background
+
+or :
+( (EventHatMorph "Scratch-StartClicked") (showBackground: "speech") (doForever ( (doPlaySoundAndWait "01 happy song"))))( (KeyEventHatMorph "space") (nextBackground))
+andresmh@x300maverick:~$ more stack2
+same as:
+( (KeyEventHatMorph "space") (nextBackground))( (EventHatMorph "Scratch-StartClicked") (showBackground: "speech") (doForever ( (doPlaySoundAndWait "01 happy song"))))
+andresmh@x300maverick:~$ 
+
+*****
+[2] Looking for self-remixes: 100,622  or 39% of the total
+
+SELECT count(*) FROM analysisdbv2.analysis_remix_comparisons_test INNER JOIN beta.projects AS p1 ON p1.id=remix_pid INNER JOIN beta.projects AS p2 ON p2.id=original_pid WHERE p1.user_id=p2.user_id LIMIT 1
+
+CREATE TABLE selfremixes SELECT remix_pid,original_pid FROM analysisdbv2.analysis_remix_comparisons_test INNER JOIN beta.projects AS p1 ON p1.id=remix_pid INNER JOIN beta.projects AS p2 ON p2.id=original_pid WHERE p1.user_id=p2.user_id;
+
+create index remix_pid_key on selfremixes (remix_pid);
+
+******************************
+
+2. Identical stacks (code): 22K
+
+SELECT * FROM `analysis_remix_comparisons_test` WHERE identical_stacks  =1
+
+Are there projects with different stacks but no blocks added/removed/changed - yes! 75K They could be identical copies though
+
+SELECT * FROM `analysis_remix_comparisons_test` WHERE identical_stacks = 0 AND blocks_added = 0 AND blocks_removed = 0;
+
+Are there projects with same stacks and differnt count of block?
+
+SELECT * FROM `analysis_remix_comparisons_test` WHERE identical_stacks = 1 AND blocks_added > 0 AND blocks_removed > 0;
+
+Reasons why identical code is marked as different:
+
+
+2. Looking for clones where the only difference is the image/sound: 16K
+SELECT * FROM `analysis_remix_comparisons_test` WHERE `identical_stacks` = 1 and `sprites_added` = 0 and `sprites_added` = 0 and `sprites_removed`=0 AND  `sprites_renamed`=0     AND  `images_added`=0 AND  `images_removed`=0 AND  `images_renamed`=0 AND  `sounds_added`=0 AND  `sounds_removed`=0 AND      `sounds_renamed`=0 AND `strings_added`=0 AND  `strings_removed`=0
+
+Example of image and sound changing due to compression: http://scratch.mit.edu/projects/Danielz123456789/1693331 but it does have some different font!
+
+Example where the original has a rickashtley, the remix has wario. The image byte difference is 7,168,280
+
+A lot of them are negative byte difference, which presumably means it's due to compression: 2K (14%)
+
+Image differnce negative due to compression? 2311 
+SELECT * FROM `analysis_remix_comparisons_test` WHERE `identical_stacks` = 1 and `sprites_added` = 0 and `sprites_added` = 0 and `sprites_removed`=0 AND                          `sprites_renamed`=0     AND  `images_added`=0 AND  `images_removed`=0 AND  `images_renamed`=0 AND  `sounds_added`=0 AND  `sounds_removed`=0 AND      `sounds_renamed`=0 AND       `strings_added`=0 AND  `strings_removed`=0 and `images_bytes_changed` < 0 
+
+Sound difference due to compression? 167
+
+ELECT * FROM `analysis_remix_comparisons_test` WHERE `identical_stacks` = 1 and `sprites_added` = 0 and `sprites_added` = 0 and `sprites_removed`=0 AND                          `sprites_renamed`=0     AND  `images_added`=0 AND  `images_removed`=0 AND  `images_renamed`=0 AND  `sounds_added`=0 AND  `sounds_removed`=0 AND      `sounds_renamed`=0 AND       `strings_added`=0 AND  `strings_removed`=0 and `sounds_bytes_changed` < 0 
+
+
+Example:
+Remix != original. Song is slightly different. Smallest byte difference: -288
+http://scratch.mit.edu/projects/DarkBowser/1222308
+
+

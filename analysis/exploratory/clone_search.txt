@@ -1,0 +1,163 @@
+#
+# This analysis is performed on the analysisdbv2.analysis_remix_comparisons_test table generated with the remix_comp.php script.
+# That table ignores projects for which we cannot get good info of the version number (I think most of them are from the batch analysis).
+#
+# Setup: 
+# ~/.my.cnf:
+#  [client]
+#  host = 127.0.0.1
+#  password = ****
+#  user = ****
+#  port = 3307
+# ~.ssh/config
+# Host sdb
+# Hostname ***
+# User ****
+# LocalForward 3307 localhost:3306
+# Port 200
+#
+
+DESCRIBING THE SAMPLE
+---------------------
+Summary: remixes from Oct 2009 to May 2011. 1 year 7 months-ish
+
+Total number of remix-original pairs: 257,792
+$ mysql -e "SELECT count(*) remix_pid FROM analysisdbv2.analysis_remix_comparisons_test"
+
+Latest remix_pid in the sample: 1,799,233 created on 2011-05-20 22:08:49
+$ mysql -e "SELECT remix_pid, created FROM analysisdbv2.analysis_remix_comparisons_test as a, beta.projects as b where a.remix_pid = b.id ORDER BY a.remix_pid DESC LIMIT 1"
+
+Oldest remix_pid in the sample: 717,476 | 2009-10-14 21:18:34
+$ mysql -e "SELECT remix_pid, created FROM analysisdbv2.analysis_remix_comparisons_test as a, beta.projects as b where a.remix_pid = b.id ORDER BY a.remix_pid ASC LIMIT 1"
+
+PROJECTS MISSING FROM THE SAMPLE
+--------------------------------
+Summary: projects before big batch analysis on Oct 2009.
+
+Roughly, they are projects before Oct 2009 and/or before project 717476. 
+The problematic ones are those for which we don't have the date on which each version was released. 
+But we do have the date when the 1st version of every project was released (beta.projects.created).
+So we can either ignore projects with more than 1 version or treat them as if they only had 1 version and use the date in projects.created (which is the the creation date for the 1st version)
+
+How many of the project were not analyzed? Approx. 708,857.
+...of those that were not analyzed, how many have moer than 1 version?  9.8% (69,833)
+$ mysql -e "SELECT count(*) as total, SUM(CASE WHEN b.version > 1 THEN 1 ELSE 0 END) as hasmorethan1version FROM beta.projects as b WHERE b.id < 717476"
+
+LOOKING FOR CLONES
+------------------
+The goal of this analysis of the sample data is to find how many remixes are clones or identical copies.
+
+1. Projects that are exactly the same: 7404 (2.8%)
+This includes no change in the state of its variables, not affected by media compression, no differences in the stack. 
+
+$ mysql -e "SELECT count(*) FROM analysisdbv2.analysis_remix_comparisons_test WHERE identical_stacks = 1 and sprites_added = 0 and sprites_added = 0 and sprites_removed=0 AND sprites_renamed=0 AND images_added=0 AND images_removed=0 AND images_renamed=0 AND images_edited=0 AND images_bytes_changed=0 AND sounds_added=0 AND sounds_removed=0 AND sounds_renamed=0 AND sounds_edited=0 AND sounds_bytes_changed=0 AND strings_added=0 AND strings_removed=0"
+
+2. Projects that don't have same stack but have the same block count and everything else: 20463 (7.9%)
+Sometimes stacks are different because they are in different order despite producing the same results [1]
+
+$ mysql -e "SELECT count(*) FROM analysisdbv2.analysis_remix_comparisons_test WHERE identical_stacks = 0 and sprites_added = 0 and sprites_added = 0 and sprites_removed=0 AND sprites_renamed=0 AND images_added=0 AND images_removed=0 AND images_renamed=0 AND images_edited=0 AND images_bytes_changed=0 AND sounds_added=0 AND sounds_removed=0 AND sounds_renamed=0 AND sounds_edited=0 AND sounds_bytes_changed=0 AND strings_added=0 AND strings_removed=0"
+
+3. Projects that don't have he same stack most likely because strings are changed: 6,751 (2.6%)
+This could be clones that are saved with a different state, hence variables are different. But it could also be changes to the speech balloons.
+$ mysql -e "SELECT count(*) FROM analysisdbv2.analysis_remix_comparisons_test WHERE identical_stacks = 0 and sprites_added = 0 and sprites_added = 0 and sprites_removed=0 AND sprites_renamed=0 AND images_added=0 AND images_removed=0 AND images_renamed=0 AND images_edited=0 AND images_bytes_changed=0 AND sounds_added=0 AND sounds_removed=0 AND sounds_renamed=0 AND sounds_edited=0 AND sounds_bytes_changed=0 AND (strings_added>1 OR strings_removed>1)"
+
+
+Projects can be clones but their code could be different because: 
+a) the remix is saved at different state hence the values of some variables could be different
+b) the projects 
+1.
+Same stacks (code), block count of each type (e.g. same number of "forever" blocks), images, sounds, strings)
+
+1. Remix is identical to the original.
+
+
+$ mysql -e "SELECT * FROM analysis_remix_comparisons_test WHERE identical_stacks = 1 and sprites_added = 0 and sprites_added = 0 and sprites_removed=0 AND sprites_renamed=0 AND images_added=0 AND images_removed=0 AND images_renamed=0 AND images_edited=0 AND images_bytes_changed=0 AND sounds_added=0 AND sounds_removed=0 AND sounds_renamed=0 AND sounds_edited=0 AND sounds_bytes_changed=0 AND strings_added=0 AND strings_removed=0"
+
+PROBLEMS
+--------
+
+Script assumed sprite names are unique. Counter example: 790788, 203171.
+I have a table with fields: id, name. How can I find all the records where the combination of id, name is the same. E.g. multiple entries for 123, "John".
+ 
+There are multiple entries forbocan be more than one nam
+
+SELECT COUNT(*) as qty,name,project_id,project_version FROM project_sprites GROUP BY name,project_id,project_version HAVING qty > 1
+
+
+TODO: calculate percentage difference as text (search for algor), we need to compare stacks by counting chars length and separating by \r\n (human readable) or parenthesis (stacks) andputting into hash and checking if different.
+
+*****
+[1] Example of identical stacks that are recognized as different
+
+when "space" key pressed
+    next background
+
+when green flag clicked
+    switch to background "speech"
+    forever
+        play sound "01 happy song" until done
+
+is the same as:
+
+when green flag clicked
+    switch to background "speech"
+    forever
+        play sound "01 happy song" until done
+
+when "space" key pressed
+    next background
+
+or :
+( (EventHatMorph "Scratch-StartClicked") (showBackground: "speech") (doForever ( (doPlaySoundAndWait "01 happy song"))))( (KeyEventHatMorph "space") (nextBackground))
+andresmh@x300maverick:~$ more stack2
+same as:
+( (KeyEventHatMorph "space") (nextBackground))( (EventHatMorph "Scratch-StartClicked") (showBackground: "speech") (doForever ( (doPlaySoundAndWait "01 happy song"))))
+andresmh@x300maverick:~$ 
+
+*****
+
+2. Identical stacks (code): 22K
+
+SELECT * FROM `analysis_remix_comparisons_test` WHERE identical_stacks  =1
+
+Are there projects with different stacks but no blocks added/removed/changed - yes! 75K They could be identical copies though
+
+SELECT * FROM `analysis_remix_comparisons_test` WHERE identical_stacks = 0 AND blocks_added = 0 AND blocks_removed = 0;
+
+Are there projects with same stacks and differnt count of block?
+
+SELECT * FROM `analysis_remix_comparisons_test` WHERE identical_stacks = 1 AND blocks_added > 0 AND blocks_removed > 0;
+
+Reasons why identical code is marked as different:
+
+*Analysis gone wrong :(
+Found some early example where the block analysis is wrong but then it was corrected. For example: 717441 - 717476
+But then I shared the two projects again and they are parsed correctly: SELECT * FROM `project_blocks_count` WHERE project_id  IN (1909838,1909852)
+
+*Stacks differ just because statements are in different order :( Wordcount helps?
+I also found that sometimes the block difference is zero but block stacks differs even though the stack is the same, it's just that it organizes the blocks differently. So different stacks does not necessarily mean different code. Maybe another metric to add would be wordcountofblockstacks.
+
+*Different values in params. Arguably different code. We do  not have this in the params. Example: IN ( 1798711, 1791225 ) different coordinates in goto
+
+2. Looking for clones where the only difference is the image/sound: 16K
+SELECT * FROM `analysis_remix_comparisons_test` WHERE `identical_stacks` = 1 and `sprites_added` = 0 and `sprites_added` = 0 and `sprites_removed`=0 AND  `sprites_renamed`=0     AND  `images_added`=0 AND  `images_removed`=0 AND  `images_renamed`=0 AND  `sounds_added`=0 AND  `sounds_removed`=0 AND      `sounds_renamed`=0 AND `strings_added`=0 AND  `strings_removed`=0
+
+Example of image and sound changing due to compression: http://scratch.mit.edu/projects/Danielz123456789/1693331 but it does have some different font!
+
+Example where the original has a rickashtley, the remix has wario. The image byte difference is 7,168,280
+
+A lot of them are negative byte difference, which presumably means it's due to compression: 2K (14%)
+
+Image differnce negative due to compression? 2311 
+SELECT * FROM `analysis_remix_comparisons_test` WHERE `identical_stacks` = 1 and `sprites_added` = 0 and `sprites_added` = 0 and `sprites_removed`=0 AND                          `sprites_renamed`=0     AND  `images_added`=0 AND  `images_removed`=0 AND  `images_renamed`=0 AND  `sounds_added`=0 AND  `sounds_removed`=0 AND      `sounds_renamed`=0 AND       `strings_added`=0 AND  `strings_removed`=0 and `images_bytes_changed` < 0 
+
+Sound difference due to compression? 167
+
+ELECT * FROM `analysis_remix_comparisons_test` WHERE `identical_stacks` = 1 and `sprites_added` = 0 and `sprites_added` = 0 and `sprites_removed`=0 AND                          `sprites_renamed`=0     AND  `images_added`=0 AND  `images_removed`=0 AND  `images_renamed`=0 AND  `sounds_added`=0 AND  `sounds_removed`=0 AND      `sounds_renamed`=0 AND       `strings_added`=0 AND  `strings_removed`=0 and `sounds_bytes_changed` < 0 
+
+
+Example:
+Remix != original. Song is slightly different. Smallest byte difference: -288
+http://scratch.mit.edu/projects/DarkBowser/1222308
+
+

@@ -1,0 +1,5 @@
+# Returns list of analyzed projects by the comparing script.
+# Useful to debug it.
+SELECT s.remix_comparisons_id, c.project_id, c.project_version, c.based_on_project_id, c.parent_project_version, s.item, s.same, s.added, s.removed, s.renamed, s.delta, s.changed 
+FROM `remix_summary_items` as s, remix_comparisons as c 
+WHERE s.remix_comparisons_id = c.id and c.complete = 1

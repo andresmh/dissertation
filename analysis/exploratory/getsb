@@ -1,0 +1,23 @@
+#!/usr/bin/python
+import sys
+import urllib2
+import urllib
+import re
+
+HOST = "http://scratch.mit.edu"
+pid = sys.argv[1]
+getpathurl = HOST + '/api/getprojectpath/' + pid
+
+print "Getting path for sb from " + getpathurl + "..."
+response = urllib2.urlopen(getpathurl).read().lstrip()
+
+if re.match('unavailable:',response):
+ print "unavailable but we'll get it..."
+ sbpath = response.split(":")[2] + '.hid'
+else:
+ sbpath = response
+
+sburl = HOST + "/static" + sbpath
+fn = pid + '.sb'
+print "downloading " + sburl + " to " + fn + " ..."
+urllib.urlretrieve(sburl,fn)

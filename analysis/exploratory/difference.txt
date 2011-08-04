@@ -1,0 +1,35 @@
+CODE
+- Blocks:
+	* Added
+	* Removed
+- Scripts (Human Readable without parameters):
+	* 
+	
+- Strings:
+	- Comments
+	- Variable names
+	- List names
+	- Broadcast names
+MEDIA
+- Images:
+	* Added
+	* Removed
+	* Edited
+- Sounds:
+	* Added
+	* Removed
+	* Edited
+- Strings: 
+	- Think:
+		* Added
+		* Removed
+	- Say
+		* Added 
+		* Removed
+
+
+Blocks similarity
+
+Reused stuff / New stuff
+( Original Project's Blocks - Blocks removed )  / ( OP blocks  - B removed + B added) 
+

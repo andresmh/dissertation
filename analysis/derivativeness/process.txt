@@ -1,0 +1,49 @@
+Derivativeness 
+
+This is a script that compares two projects.
+It is a 'diff' of sorts.
+Each row in each table of the represents a version of a Scratch project (see anatomy).
+This process compares all the projects that are remixes against the projects they are based on. 
+The 
+and their original projects on  and put the results into a database table.  
+
+The id's of the pairs are project_info.id and projects_info.based_on_project_id. You will ignore the id's of those where projects_info.based_on_project id are null because it means that those are not remixes (but they could be original projects on which remixes are based).
+
+Here is the structure of the database:
+http://svn.assembla.com/svn/scratchr/app/config/sql/analysisdbv2-db-structure.sql
+
+Here is a very simple/inefficient PHP-based comparer: http://j.mp/rfT42S
+
+The script should run on Linux (CentOS). The scrip should create and populate a table with the following fields:
+
+-remix_pid
+-original_pid
+-language
+-stacks_diff_including_params: difference in number of words
+-stacks_diff_excluding_params: ditto
+-original_stacks_word_count: useful to understand put the diff in perspective
+-humanstacks_diff_including_params: ditto
+-humanstacks_diff_excluding_params: ditto
+-original_stacks_word_count
+-blocks_count_diff: total blocks in the remix - total blocks in original
+-original_block_count
+-sprite_counts_diff: total sprites in the remix - total sprites in original
+-original_sprite_count
+-image_count_diff: total images in remix - total images in original
+-original_image_count
+-For each sprite, look at their images and compare them.
+-images_bytes_diff: total bytes difference
+-original_images_total_bytes: sum of all bytes in the original
+-sound_count_diff: total sounds in remix - total sounds in original
+-original_sound_count
+-For each sprite, look at their sounds and compare them.
+-sounds_bytes_diff: total bytes difference
+-original_sounds_total_bytes: sum of all bytes in the original
+-comment_strings_difference: count number of characters that are different
+-original_comment_strings_total: in characters
+-say_strings_difference: in characters
+-original_say_strings_total in characters
+...the same for say, think, broadcast, variable_name, variable_value, list_name,  list_value
+-strings_removed
+-remix_version
+-parent_version 
