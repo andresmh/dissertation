@@ -1,13 +1,12 @@
-\section{Structure of a Remixing System} 
-I plan to study the sociotechnical architecture of the Scratch Online Community by examining its following structural attributes (Figure~\ref{fig:structure}):
+\chapter{Structure of a Remixing System} 
+I present an analysis of the sociotechnical architecture of the Scratch Online Community by examining its following structural attributes (Figure~\ref{fig:structure}):
 1) granularity of the remixable components, 
 2) modularity of the remixable components, 
 3) decomposability of finished projects, 
 4) attributability mechanisms, and 
 5) openness to remix across systems.
 
-In this proposal I briefly define each structural attribute using one or two examples, and I explain how I am planning to go about studying it.
-I plan to analyze these structural properties of the system using varied approaches including:
+I analyze these structural properties of the system using varied approaches including:
 1) case studies that give a rich description of various scenarios that explain the influence of each attribute,
 2) analyses of the data corpus to understand the frequency of the scenarios and the relationships among the structural attributes,
 3) natural design experiments to study the effect of varying some structural dimensions.
@@ -19,7 +18,7 @@ I plan to analyze these structural properties of the system using varied approac
 \label{fig:structure}
 \end{figure}
 
-\subsection{Granularity}
+\section{Granularity}
 Granularity is the size of project's modules \citep{benkler_coases_2002}. 
 In Scratch, projects have several levels of granularity.
 Projects are made of ``sprites'' such as characters in a game or elements in the user interface.
@@ -29,14 +28,14 @@ Sprites can also have sounds that are played programmatically; for example, a ch
 
 \emph{Proposed Work.}
 The Scratch Online Community, by default, only allows sharing at the coarsest degree of granularity: only projects can be shared. 
-I plan to analyze the implications of this design decision and the ways  people get around the limitations of the architecure.
+I analyze the implications of this design decision and the ways  people get around the limitations of the architecure.
 
 I have anecdotal evidence that Scratch participants get around the granularity limitations by sharing full projects with the sole intention of sharing a single sprite, script, image or sound.
 This need for finer granularity often stems from a desire to engage in sharing practices that the original design did not anticipate. 
 % mres: not the clearest example of fine granularity % For example, in previous work \citep{nickerson_appropriation_2011}, we have documented the existence of ``coloring contests'' where someone creates a project inviting others to add color to an image and then several other people do so by remixing the original project.
-I plan to look at these practices in more detail to understand how a finer granularity mechanism would help support various types of creative and collaborative learning practices beyond the existing research that suggests that finer granularity is correlated with the number of people engaged in cooperative activities.
+I look at these practices in more detail to understand how a finer granularity mechanism would help support various types of creative and collaborative learning practices beyond the existing research that suggests that finer granularity is correlated with the number of people engaged in cooperative activities.
 
-To analyze the effect of explicitly supporting finer degree of granularity through a natural experiment, I plan to analyze the adoption of ``Scratch Resources'' \footnote{Available at http://resources.scratchr.org}, a website created by members of the Scratch community to support sharing sprites, images and sounds. 
+To analyze the effect of explicitly supporting finer degree of granularity through a natural experiment, I  analyze the adoption of ``Scratch Resources'' \footnote{Available at http://resources.scratchr.org}, a website created by members of the Scratch community to support sharing sprites, images and sounds. 
 % TODO link to Von Hippel at al on user innovation
 
 Some of my motivating questions are: 
@@ -46,12 +45,12 @@ What role does granularity play in the likelihood of a project being remixed con
 How do various levels of granularity affect the type and quality of remixes?
 How do various levels of granularity support various levels of familiarity with Scratch -- are novices more likely to rely on coarser granularity when engaging in remixing as a scaffolding mechanism?
 
-\subsection{Modularity}
+\section{Modularity}
 \citet{benkler_coases_2002} defines modularity as the ``property of a project referring to the extent to which it can be broken down into smaller components, or modules, that can be independently and asynchronously produced before they are assembled into a whole.''
 For this work, I separate two aspects of modularity:
 1. The ease of \emph{integrating} such components into new creations or remixes.
 2. The ease of \emph{decomposing} an existing project into smaller components, typically for remixing.
-In this section I plan to analyze the term ``modularity'' by focusing on the first aspect.
+In this section I  analyze the term ``modularity'' by focusing on the first aspect.
 In the next section, I focus on the second aspect under the term ``decomposability''.
 
 \emph{Proposed Work.}
@@ -68,7 +67,7 @@ Situations exist where some components are remixed despite their internal comple
 For example there is a sprite created by an advanced Scratch user that represented a physics simulation of a string. 
 This project was later remixed in a project where it represented a necklace.
 
-I plan to operationalize the assessment of modularity by measuring its adoption through a number of remixes.
+I  operationalize the assessment of modularity by measuring its adoption through a number of remixes.
 The assumption is that more modular components are remixed more.
 I examine this in two types of components: the sample sprites, images and sounds that come with Scratch, and the ones that members of the community have created.
 % Sample components are those that come preinstalled with Scratch. For example, sample images, sounds, sprites and occasionally projects.
@@ -84,7 +83,7 @@ The type of questions I will to answer are:
 2. Are modular components used more often by newcomers, and do they provide scaffolding in their learning of Scratch programming?
 3. Are community-generated components more often created by advanced users?
 
-\subsection{Decomposability}
+\section{Decomposability}
 Building on the concept of modularity examined before, in this section I examine decomposability as the ease of decomposing a compiled project.
 Decomposability is the ease of breaking something apart for remixing.
 Therefore decomposability depends on the internal complexity of a project, which in itself depends on the expertise of the person attempting to decompose the project.
@@ -107,7 +106,7 @@ The assumption would be that ``impenetrable'' projects would be correlated with 
 
 I also analyze the practices of code obfuscation and the strategies people use to discourage decomposability of their projects.
 
-\subsection{Attributability}
+\section{Attributability}
 Creators often want to get credit for their work. 
 For example, the Creative Commons license originally had attribution as one of the options of their licenses, but after analyzing several years of usage of the licenses they found that few people waived the attribution clause. 
 This led them to include attribution by default in all their licenses (and create a separate license for completely public domain works) \citep{brown_announcing_2004}.
@@ -120,10 +119,10 @@ To address this, I added a mechanism that would automatically give credit to the
 Using that design intervention as a natural experiment, we found evidence that suggests people not only want to get credit but that they prefer the credit given by another person over the automatic attribution given by the system \cite{monroy-hernandez_computers_2011}. 
 
 \emph{Proposed Work.}
-I plan to extend this work with additional experiments.
+I  extend this work with additional experiments.
 For example, one of the common complaints against remixing is that the textual description of projects often gets copied from an original project onto its remixes.
 This often gives the wrong impression that those notes were by the remixer rather than by the original creator.
-I plan to add a mechanism to show a distinction between the notes by the originator and those added by the remixer.
+I  add a mechanism to show a distinction between the notes by the originator and those added by the remixer.
 These additional notes come with a mechanism to encourage remixers to explain how the original project was changed.
 This will serve as a natural experiment to test the additional value of not only giving binary representation of attribution but also give a qualifier explanation to the connection between a remix and the original project.
 
@@ -131,7 +130,7 @@ This will serve as a natural experiment to test the additional value of not only
 % - Creator endorsed attribution.
 % - Diff
 
-\subsection{Openness}
+\section{Openness}
 In this section I focus on analyzing a system's openness from the perspective of its norms and interactions with other systems.
 The Scratch Online Community allows any of its members to download and remix any project, in that sense Scratch is more open than similar websites such as Kongregate.com or Newgrounds.com, which do not provide either the license, the environment, nor the technical features to freely open its content. 
 The ethos of openness is present in Scratch through its terms of use, the license used by all projects shared, and the community moderation styled enforced by administrators.
@@ -142,7 +141,7 @@ Additionally, there are other members of the community who encounter conflicts w
 These conflicts often involve art-sharing websites like DeviantArt.com, from where Scratch creators sometimes get images for their projects.
 
 \emph{Proposed Work.}
-I plan to investigate the ways young people in Scratch embrace, understand and reject the way openness is interpreted in Scratch.
+I  investigate the ways young people in Scratch embrace, understand and reject the way openness is interpreted in Scratch.
 I try to examine whether young people see a value in openness and how a system is or is not able to surface these values through sociotechnical design.
 I present a set of case studies that show the range of ways people embrace and reject openness and how the social and technical design of the website influence them. 
 
