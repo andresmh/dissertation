@@ -1,1 +1,2 @@
 1. Convert figures from SVG to PDF automatically before compiling tex.
+2. Create subdirs for each section
