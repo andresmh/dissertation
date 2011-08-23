@@ -21,6 +21,8 @@ extraclean:
 
 viewpdf:
 	pdflatex main && bibtex main && pdflatex main && pdflatex main && evince main.pdf
+	rm -f *.dvi *.aux *.log *.blg *.toc *.bbl *~ *.lof *.lot *.out
+	# TODO: how can I call 'clean' instead of having to copy-paste the command?
 
 problem: 
 	latex problem.tex && dvips problem.dvi && ps2pdf problem.ps; 
